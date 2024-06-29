@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block head %}
+  <link
+    rel="stylesheet"
+    href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css"
+  />
+  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+{% endblock %}
+
+
+<div class="{{ monitor.status }}"/>
+{% block content %}
+  <button
+    hx-on:click="MobileListView.open()"
+    class="aspect-square sm:hidden w-8 h-8 top-3 right-3 md:right-6 lg:right-12 absolute"
+  >
+    {% include "icons/menu.svg" %}
+  </button>
+  {% include "components/mobile_list_view.html" %}
+  <div
+    class="gap-3 grid sm:grid-cols-[240px,auto] transition-all lg:grid-cols-[320px,auto]"
+  >
+    <nav class="flex-col gap-3 hidden sm:flex">
+      <a href="/monitor/create" class="self-start">
+        <button class="button bg-love">Create new monitor</button>
+      </a>
+      {{ monitor_list_view|safe }}
+    </nav>
+    <div class="min-h-0 min-w-0 w-full mt-[-6px]">
+      <section>
+        <h1 class="text-4xl font-semibold">{{ monitor.name }}</h1>
+        <p class="text-md">
+          <a class="text-love hover:underline" href="{{ monitor.address() }}">
+            {{ monitor.hostname() }}
+          </a>
+        </p>
+      </section>
+      <section
+        class="mt-1 grid bg-surface overflow-hidden rounded-full shadow-md grid-cols-3 h-12 w-full"
+      >
+        <button
+          class="hover:bg-overlay rounded-full"
+          hx-post="/monitor/{{ monitor.id }}/pause"
+          hx-swap="innerHTML"
+        >
+          {% if monitor.paused().filter_map(|x| x.ok()) %}
+            Resume
+          {% elif monitor.paused %}
+            Resume
+          {% else %}
+            Pause
+          {% endif %}
+        </button>
+
+        <button
+          class="hover:bg-overlay rounded-full"
+          hx-get="/monitor/{{ monitor.id }}/edit"
+          hx-swap="innerHTML"
+          hx-target="#selected_tab"
+        >
+          Edit
+        </button>
+        <button
+          class="hover:bg-overlay rounded-full"
+          hx-delete="/monitor/{{ monitor.id }}"
+          hx-confirm="Are you sure you want to delete this monitor?"
+        >
+          Delete
+        </button>
+      </section>
+
+      <div id="selected_tab"></div>
+
+      <section
+        {% if !monitor.paused %}
+          hx-get="/monitor/{{ monitor.id }}/uptime-graph"
+          hx-swap="innerHTML"
+          hx-trigger="every {{ monitor.interval }}s"
+        {% endif %}
+      >
+      <-- uptime_graph -->
+        {{ uptime_graph.filter_map::<graph::Node>(|x| x.ok())|safe }}
+      </section>
+    </div>
+  </div>
+{% endblock %}
+
