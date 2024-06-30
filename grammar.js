@@ -112,7 +112,7 @@ module.exports = grammar({
       ),
 
 
-  macro_argument: $ => seq($.identifier,  alias($._macro_argument_end,$.seperator)),
+    macro_argument: $ => seq($.identifier,  $._macro_argument_end, ","),
 
     open_parent: () => "(",
     close_parent: () => ")",

@@ -4,15 +4,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "seperator",
           "named": true
         }
       ]
@@ -648,6 +644,10 @@
     "named": false
   },
   {
+    "type": ",",
+    "named": false
+  },
+  {
     "type": "/>",
     "named": false
   },
@@ -697,10 +697,6 @@
   },
   {
     "type": "path",
-    "named": true
-  },
-  {
-    "type": "seperator",
     "named": true
   },
   {

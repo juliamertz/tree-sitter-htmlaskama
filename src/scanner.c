@@ -41,11 +41,11 @@ static bool scan_until_sequence(TSLexer *lexer, char *closing_sequence) {
     return true;
 }
 
-// static void skip_whitespace(TSLexer *lexer) {
-//     while (lexer->lookahead == ' ' && lexer->lookahead == '\n') {
-//         lexer->advance(lexer, false);
-//     }
-// }
+static void skip_whitespace(TSLexer *lexer) {
+    while (lexer->lookahead == ' ' && lexer->lookahead == '\n') {
+        lexer->advance(lexer, false);
+    }
+}
 
 // static bool scan_macro_argument_end(TSLexer *lexer) {
 //     while (lexer->lookahead) {
@@ -110,6 +110,7 @@ bool tree_sitter_htmlaskama_external_scanner_scan(
     }
     if (valid_symbols[MACRO_ARGUMENT_END] && (scan_until_sequence(lexer, ",")||scan_until_sequence(lexer, ")"))){
         lexer->result_symbol = MACRO_ARGUMENT_END;
+        skip_whitespace(lexer);
         return true;
     }
     if (valid_symbols[STATEMENT_CONTENT] && scan_until_sequence(lexer, "%}")) {

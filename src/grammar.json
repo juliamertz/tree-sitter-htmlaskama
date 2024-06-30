@@ -596,13 +596,12 @@
           "name": "identifier"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_macro_argument_end"
-          },
-          "named": true,
-          "value": "seperator"
+          "type": "SYMBOL",
+          "name": "_macro_argument_end"
+        },
+        {
+          "type": "STRING",
+          "value": ","
         }
       ]
     },
