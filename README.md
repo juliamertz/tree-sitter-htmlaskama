@@ -1,4 +1,7 @@
+### A (incomplete) treesitter grammar for [Askama](https://djc.github.io/askama/)
+
 ## Features
+- [x] support for whitespace control (https://djc.github.io/askama/template_syntax.html#whitespace-control)
 - [x] Expressions
     - [ ] Expression filters
     - [ ] Expressions in strings
@@ -7,17 +10,18 @@
     - [x] Extends
     - [x] Include
     - [x] Import
-    - [ ] Macro
-    - [ ] Call
-    - [ ] Set / Let
+    - [x] For loop (still needs some highlighting work)
+    - [x] Macro
+    - [x] Filter block
+    - [ ] Call (implementation is very basic, still needs some work)
+    - [x] Set / Let
     - [x] If / Else / Elif / Endif
-        - [ ] Nest statements & content for easy tree navigation
-    - [ ] If let Some(_)
-    - [ ] Match
-- [ ] Comments
-    - [ ] Templated comments
-        - [ ] Line comments
-        - [ ] Block comments
+    - [x] If let Some(_)
+    - [x] Match
+- [x] Comments
+    - [x] Templated comments
+        - [x] Line comments
+        - [x] Block comments
     - [x] Html comments
         - [x] Line comments
         - [x] Block comments
