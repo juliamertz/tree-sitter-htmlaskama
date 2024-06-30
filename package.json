@@ -47,7 +47,11 @@
   "tree-sitter": [
     {
       "scope": "source.htmlaskama",
-      "injection-regex": "^htmlaskama$"
+      "file-types": ["htmlaskama"],
+      "injection-regex": "htmlaskama",
+      "highlights": [
+        "queries/highlights.scm"
+      ]
     }
   ]
 }

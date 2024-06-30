@@ -6,11 +6,12 @@ enum TokenType {
     EXPRESSION_CONTENT,
     STATEMENT_CONTENT,
     HTML_COMMENT,
+    MACRO_ARGUMENT,
 };
 
 typedef struct {} Scanner;
 
-static bool parse_until_sequence(TSLexer *lexer, char *closing_sequence) {
+static bool scan_until_sequence(TSLexer *lexer, char *closing_sequence) {
     lexer->mark_end(lexer);
 
     unsigned matched = 0;
@@ -27,6 +28,32 @@ static bool parse_until_sequence(TSLexer *lexer, char *closing_sequence) {
         }
     }
 
+    return true;
+}
+
+static void skip_whitespace(TSLexer *lexer) {
+    while (lexer->lookahead == ' ' && lexer->lookahead == '\n') {
+        lexer->advance(lexer, false);
+    }
+}
+
+static bool scan_macro_argument(TSLexer *lexer) {
+    while (lexer->lookahead != 0) {
+        if (lexer->lookahead != ',') {
+           lexer->mark_end(lexer);
+           lexer->advance(lexer, false);
+           // skip_whitespace(lexer);
+           break;
+        }
+        if (lexer->lookahead != ')') {
+           lexer->mark_end(lexer);
+           lexer->advance(lexer, false);
+           // skip_whitespace(lexer);
+           break;
+        }
+    }
+
+    lexer->result_symbol = MACRO_ARGUMENT;
     return true;
 }
 
@@ -71,11 +98,14 @@ bool tree_sitter_htmlaskama_external_scanner_scan(
     if (valid_symbols[HTML_COMMENT] && scan_comment(lexer)){
         return true;
     }
-    if (valid_symbols[STATEMENT_CONTENT] && parse_until_sequence(lexer, "%}")) {
+    if (valid_symbols[MACRO_ARGUMENT] && scan_macro_argument(lexer)){
+        return true;
+    }
+    if (valid_symbols[STATEMENT_CONTENT] && scan_until_sequence(lexer, "%}")) {
         lexer->result_symbol = STATEMENT_CONTENT;
         return true;
     }
-    if (valid_symbols[EXPRESSION_CONTENT] && parse_until_sequence(lexer, "}}")) {
+    if (valid_symbols[EXPRESSION_CONTENT] && scan_until_sequence(lexer, "}}")) {
         lexer->result_symbol = EXPRESSION_CONTENT;
         return true;
     }
