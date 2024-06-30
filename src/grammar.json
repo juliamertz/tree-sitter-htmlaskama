@@ -588,6 +588,24 @@
         }
       ]
     },
+    "macro_argument": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_macro_argument_end"
+          },
+          "named": true,
+          "value": "seperator"
+        }
+      ]
+    },
     "open_parent": {
       "type": "STRING",
       "value": "("
@@ -622,6 +640,18 @@
             {
               "type": "SYMBOL",
               "name": "open_parent"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "macro_argument"
+                },
+                "named": true,
+                "value": "argument"
+              }
             },
             {
               "type": "SYMBOL",
@@ -807,7 +837,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_macro_argument"
+      "name": "_macro_argument_end"
     }
   ],
   "inline": [],

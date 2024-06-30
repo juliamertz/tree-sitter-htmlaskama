@@ -7,7 +7,7 @@ module.exports = grammar({
     $._expression_content,
     $._statement_content,
     $._html_comment,
-    $._macro_argument
+    $._macro_argument_end
   ],
 
   extras: () => [/\s+/],
@@ -112,6 +112,8 @@ module.exports = grammar({
       ),
 
 
+  macro_argument: $ => seq($.identifier,  alias($._macro_argument_end,$.seperator)),
+
     open_parent: () => "(",
     close_parent: () => ")",
 
@@ -122,7 +124,7 @@ module.exports = grammar({
         seq(
           $.identifier,
           $.open_parent,
-          // alias(repeat($._macro_argument), $.argument),
+          repeat(alias($.macro_argument, $.argument)),
           $.close_parent,
         ),
         $.end_statement,
