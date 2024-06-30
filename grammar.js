@@ -9,9 +9,7 @@ module.exports = grammar({
     $._html_comment
   ],
 
-  extras: ($) => [
-    /\s+/,
-  ],
+  extras: () => [/\s+/],
 
   rules: {
     document: $ => repeat(choice($._node)),
@@ -117,8 +115,5 @@ module.exports = grammar({
         $.end_statement,
       ),
     endif_statement: ($) => seq("{%", alias("endif", $.tag_name), "%}"),
-
-
-    // _any: () => /./,
   },
 });
