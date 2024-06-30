@@ -8,8 +8,7 @@ enum TokenType {
     HTML_COMMENT,
 };
 
-typedef struct {
-} Scanner;
+typedef struct {} Scanner;
 
 static bool parse_until_sequence(TSLexer *lexer, char *closing_sequence) {
     lexer->mark_end(lexer);
@@ -33,11 +32,6 @@ static bool parse_until_sequence(TSLexer *lexer, char *closing_sequence) {
 
 /// https://github.com/tree-sitter/tree-sitter-html/blob/e4d834eb4918df01dcad5c27d1b15d56e3bd94cd/src/scanner.c#L112
 static bool scan_comment(TSLexer *lexer) {
-    // if (lexer->lookahead != '<') {
-    //     return false;
-    // }
-    // lexer->advance(lexer, false);
-
     if (lexer->lookahead != '-') {
         return false;
     }
@@ -90,13 +84,12 @@ bool tree_sitter_htmlaskama_external_scanner_scan(
 
 // If we need to allocate/deallocate state, we do it in these functions.
 void *tree_sitter_htmlaskama_external_scanner_create() { return NULL; }
+
 void tree_sitter_htmlaskama_external_scanner_destroy(void *payload) {}
 
 // If we have state, we should load and save it in these functions.
-unsigned tree_sitter_htmlaskama_external_scanner_serialize(void *payload,
-        char *buffer) {
+unsigned tree_sitter_htmlaskama_external_scanner_serialize(void *payload, char *buffer) {
     return 0;
 }
-void tree_sitter_htmlaskama_external_scanner_deserialize(void *payload,
-        char *buffer,
-        unsigned length) {}
+
+void tree_sitter_htmlaskama_external_scanner_deserialize(void *payload, char *buffer, unsigned length) {}
