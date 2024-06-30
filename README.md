@@ -1,4 +1,11 @@
 ## Features
+- [x] HTML
+- [ ] Css
+    - [ ] Inline
+    - [ ] Style blocks
+- [ ] JavaScript
+    - [ ] Inline
+    - [ ] Script blocks
 - [x] Expressions
     - [ ] Expression filters
     - [ ] Expressions in strings
@@ -21,3 +28,4 @@
     - [x] Html comments
         - [x] Line comments
         - [x] Block comments
+
