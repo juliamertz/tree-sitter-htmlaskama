@@ -4,13 +4,8 @@
     "document": {
       "type": "REPEAT",
       "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_node"
-          }
-        ]
+        "type": "SYMBOL",
+        "name": "_node"
       }
     },
     "identifier": {
@@ -26,18 +21,13 @@
       "named": true,
       "value": "tag_name"
     },
-    "content": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "identifier"
-      },
-      "named": true,
-      "value": "content"
-    },
     "string": {
       "type": "PATTERN",
       "value": "\"[^\"]*\""
+    },
+    "text": {
+      "type": "PATTERN",
+      "value": "[^<>&\\s{%]([^<>&\\s{%]*[^<>&\\s{%])?"
     },
     "_node": {
       "type": "CHOICE",
@@ -56,11 +46,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "content"
+          "name": "comment"
         },
         {
           "type": "SYMBOL",
-          "name": "comment"
+          "name": "text"
         }
       ]
     },
@@ -611,22 +601,9 @@
         }
       ]
     },
-    "macro_argument": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "identifier"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_macro_argument_end"
-        },
-        {
-          "type": "STRING",
-          "value": ","
-        }
-      ]
+    "macro_arguments": {
+      "type": "PATTERN",
+      "value": "[^)]+"
     },
     "open_parent": {
       "type": "STRING",
@@ -684,16 +661,8 @@
               "name": "open_parent"
             },
             {
-              "type": "REPEAT",
-              "content": {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "macro_argument"
-                },
-                "named": true,
-                "value": "argument"
-              }
+              "type": "SYMBOL",
+              "name": "macro_arguments"
             },
             {
               "type": "SYMBOL",
@@ -901,7 +870,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_html_content"
+      "name": "_text"
     },
     {
       "type": "SYMBOL",

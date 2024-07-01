@@ -7,22 +7,28 @@ module.exports = grammar({
     $._expression_content,
     $._statement_content,
     $._html_comment,
-    $._html_content,
     $._macro_argument_end,
   ],
 
   extras: () => [/\s+/],
 
   rules: {
-    document: ($) => repeat(choice($._node)),
+    document: ($) => repeat($._node),
 
     identifier: () => /\w+/,
     _tag_name: ($) => alias($.identifier, $.tag_name),
-    content: ($) => alias($.identifier, $.content),
+    // content: ($) => alias($.identifier, $.content),
     string: () => /"[^"]*"/,
+    text: _ => /[^<>&\s{%]([^<>&\s{%]*[^<>&\s{%])?/,
 
     _node: ($) =>
-      choice($.element, $.expression, $.statement, $.content, $.comment),
+      choice(
+        $.element,
+        $.expression,
+        $.statement,
+        $.comment,
+        $.text,
+      ),
 
     element: ($) =>
       choice(seq($.start_tag, repeat($._node), $.end_tag), $.self_closing_tag),
@@ -131,7 +137,9 @@ module.exports = grammar({
         $.end_statement,
       ),
 
-    macro_argument: ($) => seq($.identifier, $._macro_argument_end, ","),
+    // FIX: Temporary fix
+    macro_arguments: $ => /[^)]+/,
+    // macro_argument: ($) => seq($.identifier, $._macro_argument_end, optional(",")),
 
     open_parent: () => "(",
     close_parent: () => ")",
@@ -146,7 +154,8 @@ module.exports = grammar({
         seq(
           $.identifier,
           $.open_parent,
-          repeat(alias($.macro_argument, $.argument)),
+          $.macro_arguments,
+          // repeat(alias($.macro_argument, $.argument)),
           $.close_parent,
         ),
         $.end_statement,
@@ -194,30 +203,3 @@ module.exports = grammar({
     endif_statement: ($) => seq("{%", alias("endif", $.tag_name), "%}"),
   },
 });
-
-/// https://github.com/tree-sitter/tree-sitter-rust/blob/master/grammar.js#L1628
-/**
- * Creates a rule to match one or more of the rules separated by the separator.
- *
- * @param {RuleOrLiteral} sep - The separator to use.
- * @param {RuleOrLiteral} rule
- *
- * @return {SeqRule}
- *
- */
-function sepBy1(sep, rule) {
-  return seq(rule, repeat(seq(sep, rule)));
-}
-
-/**
- * Creates a rule to optionally match one or more of the rules separated by the separator.
- *
- * @param {RuleOrLiteral} sep - The separator to use.
- * @param {RuleOrLiteral} rule
- *
- * @return {ChoiceRule}
- *
- */
-function sepBy(sep, rule) {
-  return optional(sepBy1(sep, rule));
-}

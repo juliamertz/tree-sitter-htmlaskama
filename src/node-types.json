@@ -1,20 +1,5 @@
 [
   {
-    "type": "argument",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "attribute",
     "named": true,
     "fields": {},
@@ -108,10 +93,6 @@
           "named": true
         },
         {
-          "type": "content",
-          "named": true
-        },
-        {
           "type": "element",
           "named": true
         },
@@ -121,6 +102,10 @@
         },
         {
           "type": "statement",
+          "named": true
+        },
+        {
+          "type": "text",
           "named": true
         }
       ]
@@ -169,21 +154,6 @@
     }
   },
   {
-    "type": "content",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "content",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "document",
     "named": true,
     "fields": {},
@@ -196,10 +166,6 @@
           "named": true
         },
         {
-          "type": "content",
-          "named": true
-        },
-        {
           "type": "element",
           "named": true
         },
@@ -209,6 +175,10 @@
         },
         {
           "type": "statement",
+          "named": true
+        },
+        {
+          "type": "text",
           "named": true
         }
       ]
@@ -224,10 +194,6 @@
       "types": [
         {
           "type": "comment",
-          "named": true
-        },
-        {
-          "type": "content",
           "named": true
         },
         {
@@ -252,6 +218,10 @@
         },
         {
           "type": "statement",
+          "named": true
+        },
+        {
+          "type": "text",
           "named": true
         }
       ]
@@ -345,10 +315,6 @@
           "named": true
         },
         {
-          "type": "content",
-          "named": true
-        },
-        {
           "type": "element",
           "named": true
         },
@@ -374,6 +340,10 @@
         },
         {
           "type": "tag_name",
+          "named": true
+        },
+        {
+          "type": "text",
           "named": true
         }
       ]
@@ -473,10 +443,6 @@
       "required": true,
       "types": [
         {
-          "type": "argument",
-          "named": true
-        },
-        {
           "type": "close_parent",
           "named": true
         },
@@ -486,6 +452,10 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "macro_arguments",
           "named": true
         },
         {
@@ -516,10 +486,6 @@
           "named": true
         },
         {
-          "type": "content",
-          "named": true
-        },
-        {
           "type": "element",
           "named": true
         },
@@ -537,6 +503,10 @@
         },
         {
           "type": "statement",
+          "named": true
+        },
+        {
+          "type": "text",
           "named": true
         }
       ]
@@ -695,10 +665,6 @@
     "named": false
   },
   {
-    "type": ",",
-    "named": false
-  },
-  {
     "type": "/>",
     "named": false
   },
@@ -743,6 +709,10 @@
     "named": true
   },
   {
+    "type": "macro_arguments",
+    "named": true
+  },
+  {
     "type": "open_parent",
     "named": true
   },
@@ -756,6 +726,10 @@
   },
   {
     "type": "tag_name",
+    "named": true
+  },
+  {
+    "type": "text",
     "named": true
   },
   {
