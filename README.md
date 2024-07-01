@@ -9,7 +9,7 @@
     - [x] Extends
     - [x] Include
     - [x] Import
-    - [ ] For loop
+    - [x] For loop (still needs some highlighting work)
     - [x] Macro
     - [x] Filter block
     - [ ] Call (implementation is very basic, still needs some work)

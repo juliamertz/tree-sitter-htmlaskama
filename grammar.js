@@ -136,7 +136,6 @@ module.exports = grammar({
         alias("for", $.tag_name),
         alias($._statement_content, $.statement_content),
         $.end_statement,
-        // TODO: add attributes here
         repeat(choice($._node, $.attribute)),
         $.endfor_statement,
       ),

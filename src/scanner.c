@@ -72,24 +72,33 @@ static bool scan_template_comment(TSLexer *lexer) {
     }
     lexer->advance(lexer, false);
 
-    unsigned hashes = 0;
+    // TODO: Check if we can blow this up somehow when decrementing
+    unsigned openings = 1;
     while (lexer->lookahead) {
-        switch (lexer->lookahead) {
-            case '#':
-                ++hashes;
-                break;
-            case '}':
-                if (hashes >= 1) {
-                    lexer->result_symbol = TEMPLATE_COMMENT;
+        if (lexer->lookahead == '{') {
+            lexer->advance(lexer,false);
+            if (lexer->lookahead == '#') {
+                openings++;
+                lexer->advance(lexer,false);
+            }
+        }
+
+        if (lexer->lookahead == '#') {
+            lexer->advance(lexer,false);
+            if (lexer->lookahead == '}') {
+                openings--;
+                if (openings == 0) {
                     lexer->advance(lexer, false);
+                    lexer->result_symbol = TEMPLATE_COMMENT;
                     lexer->mark_end(lexer);
                     return true;
                 }
-            default:
-                hashes = 0;
+            }
         }
+
         lexer->advance(lexer, false);
     }
+
     return false;
 }
 
