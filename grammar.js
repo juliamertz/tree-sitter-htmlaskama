@@ -200,6 +200,7 @@ module.exports = grammar({
     ),
 
     // Janky but good enough.
+    // TODO: add else block case (https://djc.github.io/askama/template_syntax.html#match)
     match_statement_branch: ($) => prec.left(seq(
       $.start_statement,
       alias("when", $.keyword),
