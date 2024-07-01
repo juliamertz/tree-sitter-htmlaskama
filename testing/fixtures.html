@@ -25,6 +25,14 @@ Comment #}
   {{ 10 * count.upper() }}
 {% endmacro %}
 
+{% if thing %}
+  <p>hello</p>
+{% elif thingy.upper().map(|x| x.ok()) %}
+  <p>otherhello</p>
+{% else %}
+  <p>goodbye</p>
+{% endif %}
+
 {% macro sqrt(num) %}
   {{ num ** 0.5 }}
 {% endmacro %}
@@ -34,6 +42,14 @@ Comment #}
 <p>this is my block content</p>
 {% endblock %}
 
-<-- FIX: call statement -->
-{% call super(hello) %}
+{% call super(hello, thing) %}
+
+{% match item.ok() %}
+  {% when Some with ("foo") %}
+    <p>foo</p>
+  {% when Some with ("bar") %}
+    <p>bar</p>
+  {% when None %}
+    <p>none</p>
+{% endmatch %}
 

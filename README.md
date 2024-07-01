@@ -9,14 +9,12 @@
     - [x] Extends
     - [x] Include
     - [x] Import
-    - [~] Macro
-        - [ ] Parse arguments properly
-    - [~] Call
-    - [~] Set / Let
+    - [x] Macro
+    - [ ] Call (implementation is very basic, still needs some work)
+    - [x] Set / Let
     - [x] If / Else / Elif / Endif
-        - [ ] Nest statements & content for easy tree navigation
     - [ ] If let Some(_)
-    - [ ] Match
+    - [x] Match
 - [x] Comments
     - [x] Templated comments
         - [x] Line comments

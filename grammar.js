@@ -96,6 +96,7 @@ module.exports = grammar({
       choice(
         $.macro_statement,
         $.block_statement,
+        $.match_statement,
         // $.block_start_statement,
         prec.left($.if_statement),
         // prec.left($.elif_statement),
@@ -191,6 +192,35 @@ module.exports = grammar({
     macro_end_statement: ($) =>
       seq($.start_statement, alias("endmacro", $.tag_name), $.end_statement),
 
+    match_statement: ($) => seq(
+      prec.left($.match_start_statement),
+      // optional($._node),
+      repeat($.match_statement_branch),
+      prec.right($.match_end_statement),
+    ),
+
+    // Janky but good enough.
+    match_statement_branch: ($) => prec.left(seq(
+      $.start_statement,
+      alias("when", $.keyword),
+      alias($._statement_content, $.statement_content),
+      $.end_statement,
+      optional($._node),
+    )),
+
+    match_start_statement: ($) => seq(
+      $.start_statement,
+      alias("match", $.tag_name),
+      alias($._statement_content, $.statement_content),
+      $.end_statement,
+    ),
+
+    match_end_statement: ($) => seq(
+      $.start_statement,
+      alias("endmatch", $.tag_name),
+      $.end_statement,
+    ),
+
     extends_statement: ($) =>
       seq(
         $.start_statement,
@@ -199,7 +229,6 @@ module.exports = grammar({
         $.end_statement,
       ),
 
-    // TODO: fix nesting statements and their content
     if_statement: ($) =>
       prec.left(
         seq(
@@ -207,15 +236,16 @@ module.exports = grammar({
           alias("if", $.tag_name),
           alias($._statement_content, $.statement_content),
           $.end_statement,
-          repeat($._node),
-          // repeat(
-          //   prec.left(
-          //     seq(alias($.elif_statement, $.branch_statement), repeat($._node)),
-          //   ),
-          // ),
-          // optional(
-          //   seq(alias($.else_statement, $.branch_statement), repeat($._node)),
-          // ),
+          optional($._node),
+          repeat(
+            prec.left(
+              seq(alias($.elif_statement, $.branch_statement), optional($._node)),
+            ),
+          ),
+          optional(
+            seq(alias($.else_statement, $.branch_statement), optional($._node)),
+          ),
+          $.endif_statement,
         ),
       ),
     else_statement: ($) =>
