@@ -5,7 +5,7 @@ module.exports = grammar({
 
   externals: ($) => [
     $._expression_content,
-    // $._expression_content_end,
+    $._expression_filters_start, // FIX: not really working yet :(
     $._statement_content,
     $._html_comment,
     $._template_comment,
@@ -33,7 +33,6 @@ module.exports = grammar({
         $.expression,
         $.statement,
         $.comment,
-        // $.attribute,
         alias($.identifier, $.text),
       ),
 
@@ -79,7 +78,12 @@ module.exports = grammar({
       ),
 
     start_expression: ($) => seq("{{", optional($.whitespace_control_operator)),
-    end_expression: ($) => seq(optional($.whitespace_control_operator), "}}"),
+    end_expression: ($) =>
+      seq(
+        // optional(seq($._expression_filters_start, $.filter)), // FIX:
+        optional($.whitespace_control_operator),
+        "}}",
+      ),
 
     statement: ($) => choice($.unpaired_statement, $.paired_statement),
 
@@ -147,11 +151,11 @@ module.exports = grammar({
       seq(
         $.start_statement,
         alias("call", $.keyword),
-        $.identifier,
-        $.open_parent,
-        repeat($.argument),
-        $.close_parent,
-        // alias($._statement_content, $.statement_content),
+        // $.identifier,
+        // $.open_parent,
+        // repeat($.argument),
+        // $.close_parent,
+        alias($._statement_content, $.statement_content),
         $.end_statement,
       ),
 

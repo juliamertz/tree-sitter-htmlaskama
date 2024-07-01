@@ -5,6 +5,7 @@
 
 enum TokenType {
     EXPRESSION_CONTENT,
+    EXPRESSION_FILTERS_START,
     STATEMENT_CONTENT,
     HTML_COMMENT,
     TEMPLATE_COMMENT,
@@ -64,6 +65,49 @@ static void skip_whitespace(TSLexer *lexer) {
     while (lexer->lookahead == ' ' && lexer->lookahead == '\n') {
         lexer->advance(lexer, false);
     }
+}
+
+// we can check if a pipe is the start of filters by checking
+// if there is a closing tag in the future which doesn't have a opening
+static bool scan_expression_filters_start(TSLexer *lexer) {
+    if (lexer->lookahead != '|') {
+        return false;
+    }
+    else {
+        lexer->result_symbol = EXPRESSION_FILTERS_START;
+        lexer->advance(lexer, false);
+        return true;
+    }
+    lexer->mark_end(lexer);
+    lexer->advance(lexer, false);
+
+    // TODO: signed to be safe for now
+    signed open_parentheses = 0;
+    while(lexer->lookahead) {
+        if (lexer->lookahead == '(') {
+            open_parentheses++;
+            lexer->advance(lexer, false);
+            continue;
+        }
+        if (lexer->lookahead == ')') {
+            open_parentheses--;
+            lexer->advance(lexer, false);
+            continue;
+        }
+
+        if (lexer->lookahead == '}') {
+            lexer->advance(lexer, false);
+            if (lexer->lookahead == '}') {
+                if (open_parentheses > 0) {
+                    return false;
+                }
+                lexer->result_symbol = EXPRESSION_FILTERS_START;
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 static bool scan_template_comment(TSLexer *lexer) {
@@ -140,6 +184,9 @@ bool tree_sitter_htmlaskama_external_scanner_scan(
     TSLexer *lexer,
     const bool *valid_symbols
 ) {
+    if (valid_symbols[EXPRESSION_FILTERS_START] && scan_expression_filters_start(lexer)) {
+        return true;
+    }
     if (valid_symbols[EXPRESSION_CONTENT_END] && scan_expression_content_end(lexer)) {
         return true;
     }

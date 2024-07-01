@@ -43,13 +43,13 @@ comment -->
 <p>this is my block content</p>
 {% endblock %}
 
-{% call super(hello, thing) %}
+{% call crate::mything(hello, thing) %}
 {% set thing = mything.call() %}
 
 <-- https://djc.github.io/askama/template_syntax.html#if -->
 {% if thing %}
   <p>hello</p>
-{% elif thingy.upper().map(|x| x.ok()) %}
+{% elif thingy.upper().map(|x| x.ok())|safe %}
   <p>otherhello</p>
 {% else %}
   <p>goodbye</p>
@@ -79,6 +79,12 @@ comment -->
     {{ u }}
 {% endfilter %}
 
+<-- https://djc.github.io/askama/template_syntax.html#for -->
+{% for user in users %}
+  <li>{{ user.name }}</li>
+{% endfor %}
+
+<-- Edge case: statements inside of html tags -->
 <section
   {% if !monitor.paused %}
     hx-get="/monitor/{{ monitor.id }}/uptime-graph" hx-swap="innerHTML"
@@ -87,10 +93,5 @@ comment -->
     hx-post="/monitor/{{ monitor.id }}/uptime-graph/start"
   {% endif %}
 >
-  {{ uptime_graph|safe }}
+  {{ uptime_graph |safe }}
 </section>
-
-<-- https://djc.github.io/askama/template_syntax.html#for -->
-{% for user in users %}
-  <li>{{ user.name|e }}</li>
-{% endfor %}

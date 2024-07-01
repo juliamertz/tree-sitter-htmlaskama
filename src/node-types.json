@@ -177,19 +177,7 @@
       "required": true,
       "types": [
         {
-          "type": "argument",
-          "named": true
-        },
-        {
-          "type": "close_parent",
-          "named": true
-        },
-        {
           "type": "end_statement",
-          "named": true
-        },
-        {
-          "type": "identifier",
           "named": true
         },
         {
@@ -197,11 +185,11 @@
           "named": true
         },
         {
-          "type": "open_parent",
+          "type": "start_statement",
           "named": true
         },
         {
-          "type": "start_statement",
+          "type": "statement_content",
           "named": true
         }
       ]
