@@ -337,6 +337,29 @@
     }
   },
   {
+    "type": "endfilter_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "end_statement",
+          "named": true
+        },
+        {
+          "type": "start_statement",
+          "named": true
+        },
+        {
+          "type": "tag_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "endif_statement",
     "named": true,
     "fields": {},
@@ -396,6 +419,61 @@
         },
         {
           "type": "tag_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "filter_block_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "element",
+          "named": true
+        },
+        {
+          "type": "end_statement",
+          "named": true
+        },
+        {
+          "type": "endfilter_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "start_statement",
+          "named": true
+        },
+        {
+          "type": "statement",
+          "named": true
+        },
+        {
+          "type": "tag_name",
+          "named": true
+        },
+        {
+          "type": "text",
           "named": true
         }
       ]
@@ -789,6 +867,10 @@
       "types": [
         {
           "type": "block_statement",
+          "named": true
+        },
+        {
+          "type": "filter_block_statement",
           "named": true
         },
         {

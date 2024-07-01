@@ -22,6 +22,7 @@ module.exports = grammar({
     content: ($) => alias($.identifier, $.content),
     string: () => /"[^"]*"/,
     // text: () => /[^<>&\s{%]([^<>&\s{%]*[^<>&\s{%])?/,
+    // TODO: come up with a more permissive match for text content
     text: ($) => $.content,
 
     _node: ($) =>
@@ -86,9 +87,7 @@ module.exports = grammar({
         $.extends_statement,
         $.include_statement,
         $.import_statement,
-        // FIX: Same goes for this statement
         $.call_statement,
-        // FIX: including let statment breaks all paired statements????
         $.let_statement,
       ),
 
@@ -97,12 +96,8 @@ module.exports = grammar({
         $.macro_statement,
         $.block_statement,
         $.match_statement,
-        // $.block_start_statement,
-        prec.left($.if_statement),
-        // prec.left($.elif_statement),
-        // prec.left($.else_statement),
-        // prec.left($.endif_statement),
-        // prec.right($.block_end_statement),
+        $.filter_block_statement,
+        $.if_statement,
       ),
 
     let_statement: ($) =>
@@ -215,6 +210,21 @@ module.exports = grammar({
       alias($._statement_content, $.statement_content),
       $.end_statement,
     ),
+
+    _filter: ($) => seq($.identifier, optional(alias("|",  $.operator))),
+
+    filter_block_statement: ($) =>
+      seq(
+        $.start_statement,
+        alias("filter", $.tag_name),
+        repeat($._filter),
+        $.end_statement,
+        optional(repeat($._node)),
+        $.endfilter_statement,
+      ),
+
+    endfilter_statement: ($) =>
+      seq($.start_statement, alias("endfilter", $.tag_name), $.end_statement),
 
     match_end_statement: ($) => seq(
       $.start_statement,

@@ -429,12 +429,12 @@
           "name": "match_statement"
         },
         {
-          "type": "PREC_LEFT",
-          "value": 0,
-          "content": {
-            "type": "SYMBOL",
-            "name": "if_statement"
-          }
+          "type": "SYMBOL",
+          "name": "filter_block_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "if_statement"
         }
       ]
     },
@@ -911,6 +911,102 @@
           },
           "named": true,
           "value": "statement_content"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "end_statement"
+        }
+      ]
+    },
+    "_filter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "|"
+              },
+              "named": true,
+              "value": "operator"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "filter_block_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "start_statement"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "filter"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_filter"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "end_statement"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_node"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "endfilter_statement"
+        }
+      ]
+    },
+    "endfilter_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "start_statement"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "endfilter"
+          },
+          "named": true,
+          "value": "tag_name"
         },
         {
           "type": "SYMBOL",
