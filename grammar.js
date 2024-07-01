@@ -8,7 +8,7 @@ module.exports = grammar({
     $._statement_content,
     $._html_comment,
     $._template_comment,
-    $._macro_argument_end,
+    $._argument_end,
   ],
 
   extras: () => [/\s+/],
@@ -32,9 +32,7 @@ module.exports = grammar({
         alias($.identifier, $.text),
       ),
 
-    operator: ($) => token(
-      "="
-    ),
+    operator: ($) => token("="),
 
     element: ($) =>
       choice(seq($.start_tag, repeat($._node), $.end_tag), $.self_closing_tag),
@@ -47,10 +45,7 @@ module.exports = grammar({
 
     comment: ($) =>
       alias(
-        choice(
-          seq("{", $._template_comment),
-          seq("<", $._html_comment),
-        ),
+        choice(seq("{", $._template_comment), seq("<", $._html_comment)),
         $.comment,
       ),
 
@@ -106,7 +101,7 @@ module.exports = grammar({
     let_statement: ($) =>
       seq(
         $.start_statement,
-        alias(choice("let", "set"),$.keyword),
+        alias(choice("let", "set"), $.keyword),
         $.identifier,
         $.operator,
         alias($._expression_content, $.expression_content),
@@ -134,8 +129,12 @@ module.exports = grammar({
     call_statement: ($) =>
       seq(
         $.start_statement,
-        alias("call", $.tag_name),
-        alias($._statement_content, $.statement_content),
+        alias("call", $.call_tag_name),
+        $.identifier,
+        $.open_parent,
+        repeat($.argument),
+        $.close_parent,
+        // alias($._statement_content, $.statement_content),
         $.end_statement,
       ),
 
@@ -157,8 +156,9 @@ module.exports = grammar({
       ),
 
     // FIX: Temporary fix
-    macro_arguments: $ => /[^)]+/,
-    // macro_argument: ($) => seq($.identifier, $._macro_argument_end, optional(",")),
+    // arguments: $ => /[^)]+/,
+    // argument: ($) => seq($.identifier, $._macro_argument_end, optional(",")),
+    argument: ($) => choice($.identifier, ","),
 
     open_parent: () => "(",
     close_parent: () => ")",
@@ -173,8 +173,8 @@ module.exports = grammar({
         seq(
           $.identifier,
           $.open_parent,
-          $.macro_arguments,
-          // repeat(alias($.macro_argument, $.argument)),
+          // FIX: also captures commas as `argument`
+          alias(repeat($.argument), $.arguments),
           $.close_parent,
         ),
         $.end_statement,

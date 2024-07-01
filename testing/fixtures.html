@@ -19,6 +19,9 @@ Comment #}
   <p>this is my macro content</p>
 {% endmacro %}
 
+{% macro sqrt(num) %}
+  {{ num ** 0.5 }}
+{% endmacro %}
 
 <-- block definition -->
 {% block myblock %}
@@ -26,5 +29,5 @@ Comment #}
 {% endblock %}
 
 <-- call statement -->
-{% call super() %}
+{% call super(hello) %}
 
