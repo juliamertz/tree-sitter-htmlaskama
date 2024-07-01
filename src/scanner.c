@@ -7,6 +7,7 @@ enum TokenType {
     EXPRESSION_CONTENT,
     STATEMENT_CONTENT,
     HTML_COMMENT,
+    TEMPLATE_COMMENT,
     MACRO_ARGUMENT_END,
     HTML_CONTENT,
 };
@@ -14,8 +15,8 @@ enum TokenType {
 typedef struct {} Scanner;
 
 
-u_int32_t strlen(const char *s) {
-    u_int32_t len = 0;
+static uint32_t strlen(const char *s) {
+    uint32_t len = 0;
     while (s[len]) {
         len++;
     }
@@ -95,6 +96,38 @@ static void skip_whitespace(TSLexer *lexer) {
 //     return true;
 // }
 
+static bool scan_template_comment(TSLexer *lexer) {
+    // if (lexer->lookahead != '{') {
+    //     return false;
+    // }
+    // lexer->advance(lexer, false);
+
+    if (lexer->lookahead != '#') {
+        return false;
+    }
+    lexer->advance(lexer, false);
+
+    unsigned hashes = 0;
+    while (lexer->lookahead) {
+        switch (lexer->lookahead) {
+            case '#':
+                ++hashes;
+                break;
+            case '}':
+                if (hashes >= 1) {
+                    lexer->result_symbol = TEMPLATE_COMMENT;
+                    lexer->advance(lexer, false);
+                    lexer->mark_end(lexer);
+                    return true;
+                }
+            default:
+                hashes = 0;
+        }
+        lexer->advance(lexer, false);
+    }
+    return false;
+}
+
 /// https://github.com/tree-sitter/tree-sitter-html/blob/e4d834eb4918df01dcad5c27d1b15d56e3bd94cd/src/scanner.c#L112
 static bool scan_comment(TSLexer *lexer) {
     if (lexer->lookahead != '-') {
@@ -134,6 +167,9 @@ bool tree_sitter_htmlaskama_external_scanner_scan(
     const bool *valid_symbols
 ) {
     if (valid_symbols[HTML_COMMENT] && scan_comment(lexer)){
+        return true;
+    }
+    if (valid_symbols[TEMPLATE_COMMENT] && scan_template_comment(lexer)){
         return true;
     }
     if (valid_symbols[HTML_CONTENT] && scan_html_content(lexer)){

@@ -21,13 +21,22 @@
       "named": true,
       "value": "tag_name"
     },
+    "content": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "identifier"
+      },
+      "named": true,
+      "value": "content"
+    },
     "string": {
       "type": "PATTERN",
       "value": "\"[^\"]*\""
     },
     "text": {
-      "type": "PATTERN",
-      "value": "[^<>&\\s{%]([^<>&\\s{%]*[^<>&\\s{%])?"
+      "type": "SYMBOL",
+      "name": "content"
     },
     "_node": {
       "type": "CHOICE",
@@ -49,10 +58,22 @@
           "name": "comment"
         },
         {
-          "type": "SYMBOL",
-          "name": "text"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          },
+          "named": true,
+          "value": "text"
         }
       ]
+    },
+    "operator": {
+      "type": "TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "="
+      }
     },
     "element": {
       "type": "CHOICE",
@@ -171,6 +192,19 @@
       "content": {
         "type": "CHOICE",
         "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "{"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_template_comment"
+              }
+            ]
+          },
           {
             "type": "SEQ",
             "members": [
@@ -393,6 +427,54 @@
             "type": "SYMBOL",
             "name": "if_statement"
           }
+        }
+      ]
+    },
+    "let_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "start_statement"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "let"
+              },
+              {
+                "type": "STRING",
+                "value": "set"
+              }
+            ]
+          },
+          "named": true,
+          "value": "keyword"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "operator"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expression_content"
+          },
+          "named": true,
+          "value": "expression_content"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "end_expression"
         }
       ]
     },
@@ -870,7 +952,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_text"
+      "name": "_template_comment"
     },
     {
       "type": "SYMBOL",

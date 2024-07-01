@@ -9,17 +9,18 @@
     - [x] Extends
     - [x] Include
     - [x] Import
-    - [ ] Macro
-    - [ ] Call
-    - [ ] Set / Let
+    - [~] Macro
+        - [ ] Parse arguments properly
+    - [~] Call
+    - [~] Set / Let
     - [x] If / Else / Elif / Endif
         - [ ] Nest statements & content for easy tree navigation
     - [ ] If let Some(_)
     - [ ] Match
-- [ ] Comments
-    - [ ] Templated comments
-        - [ ] Line comments
-        - [ ] Block comments
+- [x] Comments
+    - [x] Templated comments
+        - [x] Line comments
+        - [x] Block comments
     - [x] Html comments
         - [x] Line comments
         - [x] Block comments

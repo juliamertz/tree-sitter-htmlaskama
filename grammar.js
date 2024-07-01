@@ -7,6 +7,7 @@ module.exports = grammar({
     $._expression_content,
     $._statement_content,
     $._html_comment,
+    $._template_comment,
     $._macro_argument_end,
   ],
 
@@ -17,9 +18,10 @@ module.exports = grammar({
 
     identifier: () => /\w+/,
     _tag_name: ($) => alias($.identifier, $.tag_name),
-    // content: ($) => alias($.identifier, $.content),
+    content: ($) => alias($.identifier, $.content),
     string: () => /"[^"]*"/,
-    text: _ => /[^<>&\s{%]([^<>&\s{%]*[^<>&\s{%])?/,
+    // text: () => /[^<>&\s{%]([^<>&\s{%]*[^<>&\s{%])?/,
+    text: ($) => $.content,
 
     _node: ($) =>
       choice(
@@ -27,8 +29,12 @@ module.exports = grammar({
         $.expression,
         $.statement,
         $.comment,
-        $.text,
+        alias($.identifier, $.text),
       ),
+
+    operator: ($) => token(
+      "="
+    ),
 
     element: ($) =>
       choice(seq($.start_tag, repeat($._node), $.end_tag), $.self_closing_tag),
@@ -42,7 +48,7 @@ module.exports = grammar({
     comment: ($) =>
       alias(
         choice(
-          // TODO: Add askama template comments
+          seq("{", $._template_comment),
           seq("<", $._html_comment),
         ),
         $.comment,
@@ -81,6 +87,8 @@ module.exports = grammar({
         $.include_statement,
         $.import_statement,
         $.call_statement,
+        // FIX: including let statment breaks all paired statements????
+        // $.let_statement,
       ),
 
     paired_statement: ($) =>
@@ -93,6 +101,17 @@ module.exports = grammar({
         // prec.left($.else_statement),
         // prec.left($.endif_statement),
         // prec.right($.block_end_statement),
+      ),
+
+    let_statement: ($) =>
+      seq(
+        $.start_statement,
+        alias(choice("let", "set"),$.keyword),
+        $.identifier,
+        $.operator,
+        alias($._expression_content, $.expression_content),
+        // alias($._statement_content, $.statement_content),
+        $.end_expression,
       ),
 
     start_statement: () => seq("{%"),
