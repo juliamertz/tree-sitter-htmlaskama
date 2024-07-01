@@ -16,7 +16,7 @@ Comment #}
 {% import "macros.html" %}
 {% import "macros.html" as scope %}
 
-{% set thing = mything.call() %}
+{% let thing = mything.call() %}
 
 <-- macro definition -->
 {% macro heading(arg, bold) %}
@@ -35,5 +35,5 @@ Comment #}
 {% endblock %}
 
 <-- FIX: call statement -->
-{# call super(hello) #}
+{% call super(hello) %}
 

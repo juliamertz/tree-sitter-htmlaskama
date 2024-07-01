@@ -87,7 +87,7 @@ module.exports = grammar({
         $.include_statement,
         $.import_statement,
         // FIX: Same goes for this statement
-        // $.call_statement,
+        $.call_statement,
         // FIX: including let statment breaks all paired statements????
         $.let_statement,
       ),
@@ -134,7 +134,7 @@ module.exports = grammar({
     call_statement: ($) =>
       seq(
         $.start_statement,
-        alias("call", $.call_tag_name),
+        alias("call", $.keyword),
         $.identifier,
         $.open_parent,
         repeat($.argument),

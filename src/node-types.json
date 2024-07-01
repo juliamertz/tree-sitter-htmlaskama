@@ -142,6 +142,45 @@
     }
   },
   {
+    "type": "call_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "argument",
+          "named": true
+        },
+        {
+          "type": "close_parent",
+          "named": true
+        },
+        {
+          "type": "end_statement",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "keyword",
+          "named": true
+        },
+        {
+          "type": "open_parent",
+          "named": true
+        },
+        {
+          "type": "start_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "comment",
     "named": true,
     "fields": {},
@@ -692,6 +731,10 @@
       "required": true,
       "types": [
         {
+          "type": "call_statement",
+          "named": true
+        },
+        {
           "type": "extends_statement",
           "named": true
         },
@@ -752,10 +795,6 @@
   },
   {
     "type": "attribute_value",
-    "named": true
-  },
-  {
-    "type": "call_tag_name",
     "named": true
   },
   {

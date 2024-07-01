@@ -405,6 +405,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "call_statement"
+        },
+        {
+          "type": "SYMBOL",
           "name": "let_statement"
         }
       ]
@@ -578,7 +582,7 @@
             "value": "call"
           },
           "named": true,
-          "value": "call_tag_name"
+          "value": "keyword"
         },
         {
           "type": "SYMBOL",
