@@ -1,9 +1,7 @@
-((expression
+((_
   (expression_content) @injection.content)
   (#set! injection.language "rust"))
 
-
-((if_statement
+((_
   (statement_content) @injection.content)
   (#set! injection.language "rust"))
-
