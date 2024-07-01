@@ -69,15 +69,24 @@ comment -->
 {% endmatch %}
 
 <-- https://djc.github.io/askama/template_syntax.html#filter-blocks -->
-{% filter lower|case %}
-    {{ t }} <p>my_text</p> {{ u }}
+{% filter format(name|escape) %}
+    {{ t }}
+    <p>my_text</p>
+    {{ u }}
 {% endfilter %}
 
 <section
   {% if !monitor.paused %}
     hx-get="/monitor/{{ monitor.id }}/uptime-graph" hx-swap="innerHTML"
     hx-trigger="every {{ monitor.interval }}s"
+  {% else %}
+    hx-post="/monitor/{{ monitor.id }}/uptime-graph/start"
   {% endif %}
 >
   {{ uptime_graph|safe }}
 </section>
+
+<-- https://djc.github.io/askama/template_syntax.html#for -->
+{% for user in users %}
+  <li>{{ user.name|e }}</li>
+{% endfor %}

@@ -1,6 +1,6 @@
-- [ ] support for whitespace control (https://djc.github.io/askama/template_syntax.html#whitespace-control)
 
 ## Features
+- [x] support for whitespace control (https://djc.github.io/askama/template_syntax.html#whitespace-control)
 - [x] Expressions
     - [ ] Expression filters
     - [ ] Expressions in strings
@@ -11,7 +11,7 @@
     - [x] Import
     - [ ] For loop
     - [x] Macro
-    - [ ] Filter block
+    - [x] Filter block
     - [ ] Call (implementation is very basic, still needs some work)
     - [x] Set / Let
     - [x] If / Else / Elif / Endif

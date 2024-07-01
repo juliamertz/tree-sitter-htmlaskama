@@ -14,6 +14,8 @@ module.exports = grammar({
 
   extras: () => [/\s+/],
 
+  conflicts: ($) => [[$._filter_function, $._filter]],
+
   rules: {
     document: ($) => repeat($._node),
 
@@ -31,6 +33,7 @@ module.exports = grammar({
         $.expression,
         $.statement,
         $.comment,
+        // $.attribute,
         alias($.identifier, $.text),
       ),
 
@@ -91,6 +94,7 @@ module.exports = grammar({
 
     paired_statement: ($) =>
       choice(
+        $.for_statement,
         $.macro_statement,
         $.block_statement,
         $.match_statement,
@@ -108,8 +112,8 @@ module.exports = grammar({
         $.end_statement,
       ),
 
-    start_statement: ($) => seq("{%",optional($.whitespace_control_operator)),
-    end_statement: ($) => seq(optional($.whitespace_control_operator),"%}"),
+    start_statement: ($) => seq("{%", optional($.whitespace_control_operator)),
+    end_statement: ($) => seq(optional($.whitespace_control_operator), "%}"),
 
     block_statement: ($) =>
       seq($.block_start_statement, repeat($._node), $.block_end_statement),
@@ -124,6 +128,21 @@ module.exports = grammar({
 
     block_end_statement: ($) =>
       seq($.start_statement, alias("endblock", $.tag_name), $.end_statement),
+
+    // TODO: Look at rust grammar for loop statements
+    for_statement: ($) =>
+      seq(
+        $.start_statement,
+        alias("for", $.tag_name),
+        alias($._statement_content, $.statement_content),
+        $.end_statement,
+        // TODO: add attributes here
+        repeat(choice($._node, $.attribute)),
+        $.endfor_statement,
+      ),
+
+    endfor_statement: ($) =>
+      seq($.start_statement, alias("endfor", $.tag_name), $.end_statement),
 
     call_statement: ($) =>
       seq(
@@ -214,13 +233,27 @@ module.exports = grammar({
         $.end_statement,
       ),
 
+    // FIX: Tree is still messy here but it works for now
     _filter: ($) => seq($.identifier, optional(alias("|", $.operator))),
+    filter: ($) => choice(alias($._filter_function, $.filter_call), $._filter),
+    _filter_function: ($) =>
+      seq(
+        $.identifier,
+        optional(
+          seq(
+            $.open_parent,
+            choice($._filter_function, $._filter),
+            $.close_parent,
+          ),
+        ),
+        optional(alias("|", $.operator)),
+      ),
 
     filter_block_statement: ($) =>
       seq(
         $.start_statement,
         alias("filter", $.tag_name),
-        repeat($._filter),
+        repeat($.filter),
         $.end_statement,
         optional(repeat($._node)),
         $.endfilter_statement,
@@ -247,7 +280,7 @@ module.exports = grammar({
           alias("if", $.tag_name),
           alias($._statement_content, $.statement_content),
           $.end_statement,
-          optional($._node),
+          optional(repeat(choice($._node, $.attribute))),
           repeat(
             prec.left(
               seq(
@@ -257,7 +290,10 @@ module.exports = grammar({
             ),
           ),
           optional(
-            seq(alias($.else_statement, $.branch_statement), optional($._node)),
+            seq(
+              alias($.else_statement, $.branch_statement),
+              optional(repeat(choice($._node, $.attribute))),
+            ),
           ),
           $.endif_statement,
         ),
