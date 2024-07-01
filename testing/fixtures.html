@@ -1,2 +1,9 @@
-{% macro heading(arg, bold) %}
+{% block myblock %}
+  <p>this is my block content</p>
+{% endblock %}
 
+{% macro heading(arg, bold) %}
+  <p>this is my macro content</p>
+{% endmacro %}
+
+{% call super() %}

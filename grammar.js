@@ -7,7 +7,8 @@ module.exports = grammar({
     $._expression_content,
     $._statement_content,
     $._html_comment,
-    $._macro_argument_end
+    $._html_content,
+    $._macro_argument_end,
   ],
 
   extras: () => [/\s+/],
@@ -66,22 +67,33 @@ module.exports = grammar({
     start_expression: () => seq("{{"),
     end_expression: () => seq("}}"),
 
-    statement: ($) =>
-      choice($.unpaired_statement, $.paired_statement, $.macro_statement),
+    statement: ($) => choice($.unpaired_statement, $.paired_statement),
+
     unpaired_statement: ($) =>
-      choice($.extends_statement, $.include_statement, $.import_statement),
+      choice(
+        $.extends_statement,
+        $.include_statement,
+        $.import_statement,
+        $.call_statement,
+      ),
+
     paired_statement: ($) =>
       choice(
-        $.block_start_statement,
+        $.macro_statement,
+        $.block_statement,
+        // $.block_start_statement,
         prec.left($.if_statement),
-        prec.left($.elif_statement),
-        prec.left($.else_statement),
-        prec.left($.endif_statement),
-        prec.right($.block_end_statement),
+        // prec.left($.elif_statement),
+        // prec.left($.else_statement),
+        // prec.left($.endif_statement),
+        // prec.right($.block_end_statement),
       ),
 
     start_statement: () => seq("{%"),
     end_statement: () => seq("%}"),
+
+    block_statement: ($) =>
+      seq($.block_start_statement, repeat($._node), $.block_end_statement),
 
     block_start_statement: ($) =>
       seq(
@@ -93,6 +105,14 @@ module.exports = grammar({
 
     block_end_statement: ($) =>
       seq($.start_statement, alias("endblock", $.tag_name), $.end_statement),
+
+    call_statement: ($) =>
+      seq(
+        $.start_statement,
+        alias("call", $.tag_name),
+        alias($._statement_content, $.statement_content),
+        $.end_statement,
+      ),
 
     include_statement: ($) =>
       seq(
@@ -111,13 +131,15 @@ module.exports = grammar({
         $.end_statement,
       ),
 
-
-    macro_argument: $ => seq($.identifier,  $._macro_argument_end, ","),
+    macro_argument: ($) => seq($.identifier, $._macro_argument_end, ","),
 
     open_parent: () => "(",
     close_parent: () => ")",
 
     macro_statement: ($) =>
+      seq($.macro_start_statement, repeat($._node), $.macro_end_statement),
+
+    macro_start_statement: ($) =>
       seq(
         $.start_statement,
         alias("macro", $.tag_name),
@@ -129,6 +151,9 @@ module.exports = grammar({
         ),
         $.end_statement,
       ),
+
+    macro_end_statement: ($) =>
+      seq($.start_statement, alias("endmacro", $.tag_name), $.end_statement),
 
     extends_statement: ($) =>
       seq(
@@ -183,7 +208,6 @@ module.exports = grammar({
 function sepBy1(sep, rule) {
   return seq(rule, repeat(seq(sep, rule)));
 }
-
 
 /**
  * Creates a rule to optionally match one or more of the rules separated by the separator.

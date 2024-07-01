@@ -8,6 +8,7 @@ enum TokenType {
     STATEMENT_CONTENT,
     HTML_COMMENT,
     MACRO_ARGUMENT_END,
+    HTML_CONTENT,
 };
 
 typedef struct {} Scanner;
@@ -19,6 +20,33 @@ u_int32_t strlen(const char *s) {
         len++;
     }
     return len;
+}
+
+static bool scan_html_content(TSLexer *lexer) {
+    lexer->mark_end(lexer);
+
+    char closing_chars[] = {'<', '{', '%'};
+
+    bool escaped = false;
+    while (lexer->lookahead) {
+        for (int i = 0; i < sizeof(closing_chars); i++) {
+            char closing_char = closing_chars[i];
+            if (lexer->lookahead == '\\') {
+                escaped = !escaped;
+            }
+            if (lexer->lookahead == closing_char) {
+                if (escaped) {
+                    escaped = false;
+                } else {
+                    lexer->result_symbol = HTML_CONTENT;
+                    return true;
+                }
+            }
+        }
+        lexer->advance(lexer, false);
+    }
+
+    return true;
 }
 
 static bool scan_until_sequence(TSLexer *lexer, char *closing_sequence) {
@@ -106,6 +134,9 @@ bool tree_sitter_htmlaskama_external_scanner_scan(
     const bool *valid_symbols
 ) {
     if (valid_symbols[HTML_COMMENT] && scan_comment(lexer)){
+        return true;
+    }
+    if (valid_symbols[HTML_CONTENT] && scan_html_content(lexer)){
         return true;
     }
     if (valid_symbols[MACRO_ARGUMENT_END] && (scan_until_sequence(lexer, ",")||scan_until_sequence(lexer, ")"))){

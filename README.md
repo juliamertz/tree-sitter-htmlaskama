@@ -1,3 +1,5 @@
+- [ ] Fix html content parsing
+
 ## Features
 - [x] Expressions
     - [ ] Expression filters
