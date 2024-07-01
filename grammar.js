@@ -34,7 +34,9 @@ module.exports = grammar({
         alias($.identifier, $.text),
       ),
 
-    operator: ($) => token("="),
+    operator: () => token(seq(choice("="))),
+    // TODO: Test some edge cases for whitespace control (seems to be working fine)
+    whitespace_control_operator: () => token(seq(choice("-", "~", "+"))),
 
     element: ($) =>
       choice(seq($.start_tag, repeat($._node), $.end_tag), $.self_closing_tag),
@@ -73,14 +75,10 @@ module.exports = grammar({
         $.end_expression,
       ),
 
-    start_expression: () => seq("{{"),
-    end_expression: () => seq("}}"),
+    start_expression: ($) => seq("{{", optional($.whitespace_control_operator)),
+    end_expression: ($) => seq(optional($.whitespace_control_operator), "}}"),
 
-    statement: ($) =>
-      choice(
-        $.unpaired_statement,
-        $.paired_statement,
-      ),
+    statement: ($) => choice($.unpaired_statement, $.paired_statement),
 
     unpaired_statement: ($) =>
       choice(
@@ -107,11 +105,11 @@ module.exports = grammar({
         $.identifier,
         $.operator,
         alias($._statement_content, $.statement_content),
-        $.end_statement
+        $.end_statement,
       ),
 
-    start_statement: () => seq("{%"),
-    end_statement: () => seq("%}"),
+    start_statement: ($) => seq("{%",optional($.whitespace_control_operator)),
+    end_statement: ($) => seq(optional($.whitespace_control_operator),"%}"),
 
     block_statement: ($) =>
       seq($.block_start_statement, repeat($._node), $.block_end_statement),
@@ -187,31 +185,36 @@ module.exports = grammar({
     macro_end_statement: ($) =>
       seq($.start_statement, alias("endmacro", $.tag_name), $.end_statement),
 
-    match_statement: ($) => seq(
-      prec.left($.match_start_statement),
-      // optional($._node),
-      repeat($.match_statement_branch),
-      prec.right($.match_end_statement),
-    ),
+    match_statement: ($) =>
+      seq(
+        prec.left($.match_start_statement),
+        // optional($._node),
+        repeat($.match_statement_branch),
+        prec.right($.match_end_statement),
+      ),
 
     // Janky but good enough.
     // TODO: add else block case (https://djc.github.io/askama/template_syntax.html#match)
-    match_statement_branch: ($) => prec.left(seq(
-      $.start_statement,
-      alias("when", $.keyword),
-      alias($._statement_content, $.statement_content),
-      $.end_statement,
-      optional($._node),
-    )),
+    match_statement_branch: ($) =>
+      prec.left(
+        seq(
+          $.start_statement,
+          alias("when", $.keyword),
+          alias($._statement_content, $.statement_content),
+          $.end_statement,
+          optional($._node),
+        ),
+      ),
 
-    match_start_statement: ($) => seq(
-      $.start_statement,
-      alias("match", $.tag_name),
-      alias($._statement_content, $.statement_content),
-      $.end_statement,
-    ),
+    match_start_statement: ($) =>
+      seq(
+        $.start_statement,
+        alias("match", $.tag_name),
+        alias($._statement_content, $.statement_content),
+        $.end_statement,
+      ),
 
-    _filter: ($) => seq($.identifier, optional(alias("|",  $.operator))),
+    _filter: ($) => seq($.identifier, optional(alias("|", $.operator))),
 
     filter_block_statement: ($) =>
       seq(
@@ -226,11 +229,8 @@ module.exports = grammar({
     endfilter_statement: ($) =>
       seq($.start_statement, alias("endfilter", $.tag_name), $.end_statement),
 
-    match_end_statement: ($) => seq(
-      $.start_statement,
-      alias("endmatch", $.tag_name),
-      $.end_statement,
-    ),
+    match_end_statement: ($) =>
+      seq($.start_statement, alias("endmatch", $.tag_name), $.end_statement),
 
     extends_statement: ($) =>
       seq(
@@ -250,7 +250,10 @@ module.exports = grammar({
           optional($._node),
           repeat(
             prec.left(
-              seq(alias($.elif_statement, $.branch_statement), optional($._node)),
+              seq(
+                alias($.elif_statement, $.branch_statement),
+                optional($._node),
+              ),
             ),
           ),
           optional(

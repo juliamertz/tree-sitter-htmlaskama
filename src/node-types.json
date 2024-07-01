@@ -314,12 +314,32 @@
   {
     "type": "end_expression",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "whitespace_control_operator",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "end_statement",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "whitespace_control_operator",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "end_tag",
@@ -853,11 +873,6 @@
     }
   },
   {
-    "type": "operator",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "paired_statement",
     "named": true,
     "fields": {},
@@ -929,12 +944,32 @@
   {
     "type": "start_expression",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "whitespace_control_operator",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "start_statement",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "whitespace_control_operator",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "start_tag",
@@ -1074,6 +1109,10 @@
     "named": true
   },
   {
+    "type": "operator",
+    "named": true
+  },
+  {
     "type": "path",
     "named": true
   },
@@ -1087,6 +1126,10 @@
   },
   {
     "type": "text",
+    "named": true
+  },
+  {
+    "type": "whitespace_control_operator",
     "named": true
   },
   {

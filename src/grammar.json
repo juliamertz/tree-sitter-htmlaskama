@@ -71,8 +71,43 @@
     "operator": {
       "type": "TOKEN",
       "content": {
-        "type": "STRING",
-        "value": "="
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "="
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "whitespace_control_operator": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "-"
+              },
+              {
+                "type": "STRING",
+                "value": "~"
+              },
+              {
+                "type": "STRING",
+                "value": "+"
+              }
+            ]
+          }
+        ]
       }
     },
     "element": {
@@ -363,12 +398,36 @@
         {
           "type": "STRING",
           "value": "{{"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "whitespace_control_operator"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
     "end_expression": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "whitespace_control_operator"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
         {
           "type": "STRING",
           "value": "}}"
@@ -492,12 +551,36 @@
         {
           "type": "STRING",
           "value": "{%"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "whitespace_control_operator"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
     "end_statement": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "whitespace_control_operator"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
         {
           "type": "STRING",
           "value": "%}"
@@ -1265,6 +1348,10 @@
     {
       "type": "PATTERN",
       "value": "\\s+"
+    },
+    {
+      "type": "PATTERN",
+      "value": "\\-"
     }
   ],
   "conflicts": [],

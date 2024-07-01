@@ -72,3 +72,12 @@ comment -->
 {% filter lower|case %}
     {{ t }} <p>my_text</p> {{ u }}
 {% endfilter %}
+
+<section
+  {% if !monitor.paused %}
+    hx-get="/monitor/{{ monitor.id }}/uptime-graph" hx-swap="innerHTML"
+    hx-trigger="every {{ monitor.interval }}s"
+  {% endif %}
+>
+  {{ uptime_graph|safe }}
+</section>
