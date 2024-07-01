@@ -430,6 +430,41 @@
     }
   },
   {
+    "type": "let_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "end_statement",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "keyword",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "start_statement",
+          "named": true
+        },
+        {
+          "type": "statement_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "macro_end_statement",
     "named": true,
     "fields": {},
@@ -666,6 +701,10 @@
         },
         {
           "type": "include_statement",
+          "named": true
+        },
+        {
+          "type": "let_statement",
           "named": true
         }
       ]

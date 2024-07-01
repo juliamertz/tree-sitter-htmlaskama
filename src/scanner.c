@@ -9,7 +9,7 @@ enum TokenType {
     HTML_COMMENT,
     TEMPLATE_COMMENT,
     MACRO_ARGUMENT_END,
-    HTML_CONTENT,
+    EXPRESSION_CONTENT_END,
 };
 
 typedef struct {} Scanner;
@@ -23,30 +23,20 @@ static uint32_t strlen(const char *s) {
     return len;
 }
 
-static bool scan_html_content(TSLexer *lexer) {
+static bool scan_expression_content_end(TSLexer *lexer) {
     lexer->mark_end(lexer);
 
-    char closing_chars[] = {'<', '{', '%'};
-
-    bool escaped = false;
-    while (lexer->lookahead) {
-        for (int i = 0; i < sizeof(closing_chars); i++) {
-            char closing_char = closing_chars[i];
-            if (lexer->lookahead == '\\') {
-                escaped = !escaped;
-            }
-            if (lexer->lookahead == closing_char) {
-                if (escaped) {
-                    escaped = false;
-                } else {
-                    lexer->result_symbol = HTML_CONTENT;
-                    return true;
-                }
-            }
-        }
-        lexer->advance(lexer, false);
+    if (lexer->lookahead != '}') {
+        return false;
     }
+    lexer->advance(lexer, false);
 
+    if (lexer->lookahead != '}') {
+        return false;
+    }
+    lexer->advance(lexer, false);
+
+    lexer->result_symbol = EXPRESSION_CONTENT_END;
     return true;
 }
 
@@ -76,32 +66,7 @@ static void skip_whitespace(TSLexer *lexer) {
     }
 }
 
-// static bool scan_macro_argument_end(TSLexer *lexer) {
-//     while (lexer->lookahead) {
-//         if (lexer->lookahead == ',') {
-//            lexer->mark_end(lexer);
-//            lexer->advance(lexer, false);
-//            // skip_whitespace(lexer);
-//            break;
-//         }
-//         if (lexer->lookahead == ')') {
-//            lexer->mark_end(lexer);
-//            lexer->advance(lexer, false);
-//            // skip_whitespace(lexer);
-//            break;
-//         }
-//     }
-//
-//     lexer->result_symbol = MACRO_ARGUMENT_END;
-//     return true;
-// }
-
 static bool scan_template_comment(TSLexer *lexer) {
-    // if (lexer->lookahead != '{') {
-    //     return false;
-    // }
-    // lexer->advance(lexer, false);
-
     if (lexer->lookahead != '#') {
         return false;
     }
@@ -166,16 +131,16 @@ bool tree_sitter_htmlaskama_external_scanner_scan(
     TSLexer *lexer,
     const bool *valid_symbols
 ) {
+    if (valid_symbols[EXPRESSION_CONTENT_END] && scan_expression_content_end(lexer)) {
+        return true;
+    }
     if (valid_symbols[HTML_COMMENT] && scan_comment(lexer)){
         return true;
     }
     if (valid_symbols[TEMPLATE_COMMENT] && scan_template_comment(lexer)){
         return true;
     }
-    if (valid_symbols[HTML_CONTENT] && scan_html_content(lexer)){
-        return true;
-    }
-    if (valid_symbols[MACRO_ARGUMENT_END] && (scan_until_sequence(lexer, ",")||scan_until_sequence(lexer, ")"))){
+    if (valid_symbols[MACRO_ARGUMENT_END] && (scan_until_sequence(lexer, ","))){
         lexer->result_symbol = MACRO_ARGUMENT_END;
         skip_whitespace(lexer);
         return true;

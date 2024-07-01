@@ -10,9 +10,13 @@
 Template
 Comment #}
 
+{{ 10 * count.upper() |aap }}
+
 <-- import statements -->
 {% import "macros.html" %}
 {% import "macros.html" as scope %}
+
+{% set thing = mything.call() %}
 
 <-- macro definition -->
 {% macro heading(arg, bold) %}
@@ -30,6 +34,6 @@ Comment #}
 <p>this is my block content</p>
 {% endblock %}
 
-<-- call statement -->
-{% call super(hello) %}
+<-- FIX: call statement -->
+{# call super(hello) #}
 

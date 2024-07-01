@@ -5,6 +5,7 @@ module.exports = grammar({
 
   externals: ($) => [
     $._expression_content,
+    // $._expression_content_end,
     $._statement_content,
     $._html_comment,
     $._template_comment,
@@ -88,7 +89,7 @@ module.exports = grammar({
         // FIX: Same goes for this statement
         // $.call_statement,
         // FIX: including let statment breaks all paired statements????
-        // $.let_statement,
+        $.let_statement,
       ),
 
     paired_statement: ($) =>
@@ -109,9 +110,8 @@ module.exports = grammar({
         alias(choice("let", "set"), $.keyword),
         $.identifier,
         $.operator,
-        alias($._expression_content, $.expression_content),
-        // alias($._statement_content, $.statement_content),
-        $.end_expression,
+        alias($._statement_content, $.statement_content),
+        $.end_statement
       ),
 
     start_statement: () => seq("{%"),
