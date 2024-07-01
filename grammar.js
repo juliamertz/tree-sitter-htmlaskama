@@ -81,7 +81,7 @@ module.exports = grammar({
         $.extends_statement,
         $.include_statement,
         $.import_statement,
-        $.call_statement,
+        // $.call_statement,
         // FIX: including let statment breaks all paired statements????
         // $.let_statement,
       ),
@@ -155,16 +155,19 @@ module.exports = grammar({
         $.end_statement,
       ),
 
-    // FIX: Temporary fix
-    // arguments: $ => /[^)]+/,
-    // argument: ($) => seq($.identifier, $._macro_argument_end, optional(",")),
     argument: ($) => choice($.identifier, ","),
 
     open_parent: () => "(",
     close_parent: () => ")",
 
     macro_statement: ($) =>
-      seq($.macro_start_statement, repeat($._node), $.macro_end_statement),
+      seq(
+        $.macro_start_statement,
+        $._node, // I have no idea why this works, i would imagine a repeat($._node) would be required here,
+                 // but that breaks everything, This does match multiple nodes (even though it's not repeated???)
+                 // FIX: very flaky behaviour here
+        $.macro_end_statement,
+      ),
 
     macro_start_statement: ($) =>
       seq(
