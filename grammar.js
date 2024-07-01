@@ -125,19 +125,19 @@ module.exports = grammar({
     block_start_statement: ($) =>
       seq(
         $.start_statement,
-        alias("block", $.tag_name),
+        alias("block", $.keyword),
         $.identifier,
         $.end_statement,
       ),
 
     block_end_statement: ($) =>
-      seq($.start_statement, alias("endblock", $.tag_name), $.end_statement),
+      seq($.start_statement, alias("endblock", $.keyword), $.end_statement),
 
     // TODO: Look at rust grammar for loop statements
     for_statement: ($) =>
       seq(
         $.start_statement,
-        alias("for", $.tag_name),
+        alias("for", $.keyword),
         alias($._statement_content, $.statement_content),
         $.end_statement,
         repeat(choice($._node, $.attribute)),
@@ -145,7 +145,7 @@ module.exports = grammar({
       ),
 
     endfor_statement: ($) =>
-      seq($.start_statement, alias("endfor", $.tag_name), $.end_statement),
+      seq($.start_statement, alias("endfor", $.keyword), $.end_statement),
 
     call_statement: ($) =>
       seq(
@@ -162,7 +162,7 @@ module.exports = grammar({
     include_statement: ($) =>
       seq(
         $.start_statement,
-        alias("include", $.tag_name),
+        alias("include", $.keyword),
         alias($.string, $.path),
         $.end_statement,
       ),
@@ -170,7 +170,7 @@ module.exports = grammar({
     import_statement: ($) =>
       seq(
         $.start_statement,
-        alias("import", $.tag_name),
+        alias("import", $.keyword),
         alias($.string, $.path),
         optional(seq(alias("as", $.keyword), $.identifier)),
         $.end_statement,
@@ -193,7 +193,7 @@ module.exports = grammar({
     macro_start_statement: ($) =>
       seq(
         $.start_statement,
-        alias("macro", $.tag_name),
+        alias("macro", $.keyword),
         seq(
           $.identifier,
           $.open_parent,
@@ -205,7 +205,7 @@ module.exports = grammar({
       ),
 
     macro_end_statement: ($) =>
-      seq($.start_statement, alias("endmacro", $.tag_name), $.end_statement),
+      seq($.start_statement, alias("endmacro", $.keyword), $.end_statement),
 
     match_statement: ($) =>
       seq(
@@ -231,7 +231,7 @@ module.exports = grammar({
     match_start_statement: ($) =>
       seq(
         $.start_statement,
-        alias("match", $.tag_name),
+        alias("match", $.keyword),
         alias($._statement_content, $.statement_content),
         $.end_statement,
       ),
@@ -255,7 +255,7 @@ module.exports = grammar({
     filter_block_statement: ($) =>
       seq(
         $.start_statement,
-        alias("filter", $.tag_name),
+        alias("filter", $.keyword),
         repeat($.filter),
         $.end_statement,
         optional(repeat($._node)),
@@ -263,15 +263,15 @@ module.exports = grammar({
       ),
 
     endfilter_statement: ($) =>
-      seq($.start_statement, alias("endfilter", $.tag_name), $.end_statement),
+      seq($.start_statement, alias("endfilter", $.keyword), $.end_statement),
 
     match_end_statement: ($) =>
-      seq($.start_statement, alias("endmatch", $.tag_name), $.end_statement),
+      seq($.start_statement, alias("endmatch", $.keyword), $.end_statement),
 
     extends_statement: ($) =>
       seq(
         $.start_statement,
-        alias("extends", $.tag_name),
+        alias("extends", $.keyword),
         alias($.string, $.path),
         $.end_statement,
       ),
@@ -280,7 +280,7 @@ module.exports = grammar({
       prec.left(
         seq(
           $.start_statement,
-          alias("if", $.tag_name),
+          alias("if", $.keyword),
           alias($._statement_content, $.statement_content),
           $.end_statement,
           optional(repeat(choice($._node, $.attribute))),
@@ -302,14 +302,14 @@ module.exports = grammar({
         ),
       ),
     else_statement: ($) =>
-      seq($.start_statement, alias("else", $.tag_name), $.end_statement),
+      seq($.start_statement, alias("else", $.keyword), $.end_statement),
     elif_statement: ($) =>
       seq(
         $.start_statement,
-        alias("elif", $.tag_name),
+        alias("elif", $.keyword),
         alias($._statement_content, $.statement_content),
         $.end_statement,
       ),
-    endif_statement: ($) => seq("{%", alias("endif", $.tag_name), "%}"),
+    endif_statement: ($) => seq("{%", alias("endif", $.keyword), "%}"),
   },
 });

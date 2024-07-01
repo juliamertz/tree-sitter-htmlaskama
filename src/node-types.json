@@ -65,11 +65,11 @@
           "named": true
         },
         {
-          "type": "start_statement",
+          "type": "keyword",
           "named": true
         },
         {
-          "type": "tag_name",
+          "type": "start_statement",
           "named": true
         }
       ]
@@ -92,11 +92,11 @@
           "named": true
         },
         {
-          "type": "start_statement",
+          "type": "keyword",
           "named": true
         },
         {
-          "type": "tag_name",
+          "type": "start_statement",
           "named": true
         }
       ]
@@ -154,15 +154,15 @@
           "named": true
         },
         {
+          "type": "keyword",
+          "named": true
+        },
+        {
           "type": "start_statement",
           "named": true
         },
         {
           "type": "statement_content",
-          "named": true
-        },
-        {
-          "type": "tag_name",
           "named": true
         }
       ]
@@ -357,11 +357,11 @@
           "named": true
         },
         {
-          "type": "start_statement",
+          "type": "keyword",
           "named": true
         },
         {
-          "type": "tag_name",
+          "type": "start_statement",
           "named": true
         }
       ]
@@ -380,11 +380,11 @@
           "named": true
         },
         {
-          "type": "start_statement",
+          "type": "keyword",
           "named": true
         },
         {
-          "type": "tag_name",
+          "type": "start_statement",
           "named": true
         }
       ]
@@ -399,7 +399,7 @@
       "required": true,
       "types": [
         {
-          "type": "tag_name",
+          "type": "keyword",
           "named": true
         }
       ]
@@ -441,15 +441,15 @@
           "named": true
         },
         {
+          "type": "keyword",
+          "named": true
+        },
+        {
           "type": "path",
           "named": true
         },
         {
           "type": "start_statement",
-          "named": true
-        },
-        {
-          "type": "tag_name",
           "named": true
         }
       ]
@@ -511,15 +511,15 @@
           "named": true
         },
         {
+          "type": "keyword",
+          "named": true
+        },
+        {
           "type": "start_statement",
           "named": true
         },
         {
           "type": "statement",
-          "named": true
-        },
-        {
-          "type": "tag_name",
           "named": true
         },
         {
@@ -589,6 +589,10 @@
           "named": true
         },
         {
+          "type": "keyword",
+          "named": true
+        },
+        {
           "type": "start_statement",
           "named": true
         },
@@ -598,10 +602,6 @@
         },
         {
           "type": "statement_content",
-          "named": true
-        },
-        {
-          "type": "tag_name",
           "named": true
         },
         {
@@ -648,6 +648,10 @@
           "named": true
         },
         {
+          "type": "keyword",
+          "named": true
+        },
+        {
           "type": "start_statement",
           "named": true
         },
@@ -657,10 +661,6 @@
         },
         {
           "type": "statement_content",
-          "named": true
-        },
-        {
-          "type": "tag_name",
           "named": true
         },
         {
@@ -697,10 +697,6 @@
         {
           "type": "start_statement",
           "named": true
-        },
-        {
-          "type": "tag_name",
-          "named": true
         }
       ]
     }
@@ -718,15 +714,15 @@
           "named": true
         },
         {
+          "type": "keyword",
+          "named": true
+        },
+        {
           "type": "path",
           "named": true
         },
         {
           "type": "start_statement",
-          "named": true
-        },
-        {
-          "type": "tag_name",
           "named": true
         }
       ]
@@ -780,11 +776,11 @@
           "named": true
         },
         {
-          "type": "start_statement",
+          "type": "keyword",
           "named": true
         },
         {
-          "type": "tag_name",
+          "type": "start_statement",
           "named": true
         }
       ]
@@ -815,15 +811,15 @@
           "named": true
         },
         {
+          "type": "keyword",
+          "named": true
+        },
+        {
           "type": "open_parent",
           "named": true
         },
         {
           "type": "start_statement",
-          "named": true
-        },
-        {
-          "type": "tag_name",
           "named": true
         }
       ]
@@ -881,11 +877,11 @@
           "named": true
         },
         {
-          "type": "start_statement",
+          "type": "keyword",
           "named": true
         },
         {
-          "type": "tag_name",
+          "type": "start_statement",
           "named": true
         }
       ]
@@ -904,15 +900,15 @@
           "named": true
         },
         {
+          "type": "keyword",
+          "named": true
+        },
+        {
           "type": "start_statement",
           "named": true
         },
         {
           "type": "statement_content",
-          "named": true
-        },
-        {
-          "type": "tag_name",
           "named": true
         }
       ]

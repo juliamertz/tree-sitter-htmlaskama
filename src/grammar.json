@@ -625,7 +625,7 @@
             "value": "block"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "SYMBOL",
@@ -651,7 +651,7 @@
             "value": "endblock"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "SYMBOL",
@@ -673,7 +673,7 @@
             "value": "for"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "ALIAS",
@@ -724,7 +724,7 @@
             "value": "endfor"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "SYMBOL",
@@ -777,7 +777,7 @@
             "value": "include"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "ALIAS",
@@ -808,7 +808,7 @@
             "value": "import"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "ALIAS",
@@ -903,7 +903,7 @@
             "value": "macro"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "SEQ",
@@ -954,7 +954,7 @@
             "value": "endmacro"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "SYMBOL",
@@ -1051,7 +1051,7 @@
             "value": "match"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "ALIAS",
@@ -1186,7 +1186,7 @@
             "value": "filter"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "REPEAT",
@@ -1234,7 +1234,7 @@
             "value": "endfilter"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "SYMBOL",
@@ -1256,7 +1256,7 @@
             "value": "endmatch"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "SYMBOL",
@@ -1278,7 +1278,7 @@
             "value": "extends"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "ALIAS",
@@ -1312,7 +1312,7 @@
               "value": "if"
             },
             "named": true,
-            "value": "tag_name"
+            "value": "keyword"
           },
           {
             "type": "ALIAS",
@@ -1451,7 +1451,7 @@
             "value": "else"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "SYMBOL",
@@ -1473,7 +1473,7 @@
             "value": "elif"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "ALIAS",
@@ -1504,7 +1504,7 @@
             "value": "endif"
           },
           "named": true,
-          "value": "tag_name"
+          "value": "keyword"
         },
         {
           "type": "STRING",
