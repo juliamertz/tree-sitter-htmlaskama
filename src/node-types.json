@@ -589,6 +589,10 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "keyword",
           "named": true
         },

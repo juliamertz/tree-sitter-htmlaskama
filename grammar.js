@@ -133,11 +133,12 @@ module.exports = grammar({
     block_end_statement: ($) =>
       seq($.start_statement, alias("endblock", $.keyword), $.end_statement),
 
-    // TODO: Look at rust grammar for loop statements
     for_statement: ($) =>
       seq(
         $.start_statement,
         alias("for", $.keyword),
+        $.identifier,
+        alias("in", $.keyword),
         alias($._statement_content, $.statement_content),
         $.end_statement,
         repeat(choice($._node, $.attribute)),
@@ -184,9 +185,7 @@ module.exports = grammar({
     macro_statement: ($) =>
       seq(
         $.macro_start_statement,
-        $._node, // I have no idea why this works, i would imagine a repeat($._node) would be required here,
-        // but that breaks everything, This does match multiple nodes (even though it's not repeated???)
-        // FIX: very flaky behaviour here
+        $._node,
         $.macro_end_statement,
       ),
 

@@ -81,7 +81,6 @@ static bool scan_expression_filters_start(TSLexer *lexer) {
     lexer->mark_end(lexer);
     lexer->advance(lexer, false);
 
-    // TODO: signed to be safe for now
     signed open_parentheses = 0;
     while(lexer->lookahead) {
         if (lexer->lookahead == '(') {
@@ -116,7 +115,6 @@ static bool scan_template_comment(TSLexer *lexer) {
     }
     lexer->advance(lexer, false);
 
-    // TODO: Check if we can blow this up somehow when decrementing
     unsigned openings = 1;
     while (lexer->lookahead) {
         if (lexer->lookahead == '{') {

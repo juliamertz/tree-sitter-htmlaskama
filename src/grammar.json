@@ -676,6 +676,19 @@
           "value": "keyword"
         },
         {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "in"
+          },
+          "named": true,
+          "value": "keyword"
+        },
+        {
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",

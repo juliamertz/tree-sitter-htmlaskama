@@ -80,7 +80,7 @@ comment -->
 {% endfilter %}
 
 <-- https://djc.github.io/askama/template_syntax.html#for -->
-{% for user in users %}
+{% for user in users.map(|x| x.ok()) %}
   <li>{{ user.name }}</li>
 {% endfor %}
 
